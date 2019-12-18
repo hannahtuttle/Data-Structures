@@ -3,8 +3,8 @@ as well as its next node in the List."""
 
 
 class ListNode:
-    def __init__(self, key, value, prev=None, next=None):
-        self.key = key
+    def __init__(self,value, prev=None, next=None):
+        # self.key = key
         self.value = value
         self.prev = prev
         self.next = next
@@ -12,9 +12,9 @@ class ListNode:
     """Wrap the given value in a ListNode and insert it
     after this node. Note that this node could already
     have a next node it is point to."""
-    def insert_after(self, key, value):
+    def insert_after(self, value):
         current_next = self.next
-        self.next = ListNode(key, value, self, current_next)
+        self.next = ListNode(value, self, current_next)
         if current_next:
             current_next.prev = self.next
 
@@ -23,7 +23,7 @@ class ListNode:
     have a previous node it is point to."""
     def insert_before(self, value):
         current_prev = self.prev
-        self.prev = ListNode(key, value, current_prev, self)
+        self.prev = ListNode(value, current_prev, self)
         if current_prev:
             current_prev.next = self.prev
 
@@ -49,8 +49,8 @@ class DoublyLinkedList:
     def __len__(self):
         return self.length
 
-    def add_to_head(self, key, value):
-        new_node = ListNode(key, value, None, None)
+    def add_to_head(self, value):
+        new_node = ListNode(value, None, None)
         self.length += 1
         # if List is Empty
         if not self.head and not self.tail:
@@ -66,8 +66,8 @@ class DoublyLinkedList:
         self.delete(self.head)
         return value
 
-    def add_to_tail(self, key, value):
-        new_node = ListNode(key, value, None, None)
+    def add_to_tail(self,value):
+        new_node = ListNode(value, None, None)
         self.length += 1
         # if empty list
         if not self.head and not self.tail:
@@ -87,9 +87,9 @@ class DoublyLinkedList:
         if node is self.head:
             return
         value = node.value
-        key = node.key
+        # key = node.key
         self.delete(node)
-        self.add_to_head(key, value)
+        self.add_to_head(value)
 
     def move_to_end(self, node):
         if node is self.tail:
