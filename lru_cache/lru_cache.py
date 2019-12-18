@@ -1,3 +1,8 @@
+import sys
+sys.path.append('../doubly_linked_list')
+from doubly_linked_list import DoublyLinkedList
+
+
 class LRUCache:
     """
     Our LRUCache class keeps track of the max number of nodes it
@@ -7,7 +12,10 @@ class LRUCache:
     to every node stored in the cache.
     """
     def __init__(self, limit=10):
-        pass
+        self.limit = limit
+        self.size = 0
+        self.DLL = DoublyLinkedList()
+        self.storage = {}
 
     """
     Retrieves the value associated with the given key. Also
@@ -16,8 +24,21 @@ class LRUCache:
     Returns the value associated with the key or None if the
     key-value pair doesn't exist in the cache.
     """
+    # find the key/value pair that matches they key, return the value
+    # move the node you are vewing to the head.
+    # return none if the key does not exist
     def get(self, key):
-        pass
+        current = self.DLL.head
+        val = ''
+        while current is not None:
+            if current.key == key:
+                self.DLL.move_to_front(current)
+                val = current.value
+            current = current.next
+        if val == '':
+            return None
+        else:
+            return val
 
     """
     Adds the given key-value pair to the cache. The newly-
@@ -29,5 +50,29 @@ class LRUCache:
     want to overwrite the old value associated with the key with
     the newly-specified value.
     """
+    # if the size id less than 10:
+        # check all the keys and make sure they don't already exist, if the key already exists replace the value, move the nose to the head
+        # if the node does not exist and the size is less than 10 just add the node to the head
+    #if the size is == 10:
+        # check all the keys and make sure they don't already exist, if the key already exists replace the value, move the nose to the head
+        #  the add to the head and remove the tail
     def set(self, key, value):
-        pass
+        if self.size == 0:
+            self.DLL.add_to_head(key, value)
+            self.size += 1
+        else:
+            current = self.DLL.head
+            already_exist = False
+            while current is not None:
+                if current.key == key:
+                    current.value = value
+                    already_exist = True
+                    self.DLL.move_to_front(current)
+                current = current.next
+            if already_exist == False and self.size < self.limit:
+                self.DLL.add_to_head(key, value)
+                self.size += 1
+            elif already_exist == False and self.size == self.limit:
+                self.DLL.add_to_head(key, value)
+                self.DLL.remove_from_tail()
+
